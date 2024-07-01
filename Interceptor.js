@@ -7,26 +7,18 @@ function toHexString(byteArray) {
 
 Java.perform(() => {
     var Crypto = Java.use("java.security.MessageDigest");
-    var Cipher = Java.use("javax.crypto.Cipher");
-    Crypto.getInstance.overload('java.lang.String').implementation = function (v) {
-        console.log("Crypto caught");
-        console.log(v);
-        return this.getInstance(v);
+    Crypto.getInstance.overload('java.lang.String').implementation = function (HashAlgorithm) {
+        console.log("getInstance caught: " + HashAlgorithm);
+        return this.getInstance(HashAlgorithm);
     };
-    Crypto.update.overload("[B").implementation = function (v) {
-        console.log("Update caught");
-        console.log(toHexString(v));
-        this.update(v);
+    Crypto.update.overload("[B").implementation = function (AddedBytes) {
+        console.log("Update caught: " + toHexString(AddedBytes));
+        this.update(AddedBytes);
     };
     Crypto.digest.overload().implementation = function () { 
-        console.log("Digest caught");
-        let bytes = this.digest();
-        console.log(toHexString(bytes));
+        let OutputBytes = this.digest();
+        console.log("Digest caught: " + toHexString(OutputBytes));
         return bytes;
     };
-    Cipher.doFinal.overload('[B').implementation = function (v) {
-        var test = this.doFinal(v);
-        console.log(test);
-        return test;
-    };
+
 });
