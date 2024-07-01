@@ -18,7 +18,7 @@ Java.perform(() => {
     Crypto.digest.overload().implementation = function () { 
         let OutputBytes = this.digest();
         console.log("Digest caught: " + toHexString(OutputBytes));
-        return bytes;
+        return OutputBytes;
     };
 
 });
