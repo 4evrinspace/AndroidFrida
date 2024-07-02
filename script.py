@@ -1,10 +1,16 @@
 import frida
-##TODO: Make modes of working
+import sys
+
 device = frida.get_usb_device()
 app_prev = None
 session = None
-hash_interceptor = open("hash_interceptor.js").read()
-crypto_interceptor = open("crypto_interceptor.js").read()
+js_file = ""
+if len(sys.argv) == 1:
+    js_file = open("combined_interceptor.js").read()
+elif sys.argv[1] == "hash":
+    js_file = open("hash_interceptor.js").read()
+elif sys.argv[1] == "crypto":
+    js_file = open("crypto_interceptor.js").read()
 while True: ## placeholder
     app = device.get_frontmost_application(scope="full")
     ## MAKE SURE THAT FRIDA-SERVER IS RUNNING
@@ -12,7 +18,6 @@ while True: ## placeholder
         if session is not None:
             session.detach()
         session = device.attach(app.pid)
-        script = session.create_script(crypto_interceptor) ##TODO: Choose from arguments
+        script = session.create_script(js_file)
         script.load()
-
     app_prev = app

@@ -9,9 +9,11 @@ Small pet-project about intercepting into android processes using frida and self
 ## Running 
 To run a script written on js, you should run script.py file
 ```
-python script.py
+python script.py <arguments>
 ``` 
-to exit from frida shell execute
+Arguments - hash/crypto/*(nothing) - to trace hash/crypto/both set of functions respectively
+
+to exit from frida shell after command execute
 ```
 exit
 ```
