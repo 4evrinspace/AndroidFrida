@@ -6,16 +6,16 @@ function toHexString(byteArray) {
 
 
 Java.perform(() => {
-    var Crypto = Java.use("java.security.MessageDigest");
-    Crypto.getInstance.overload('java.lang.String').implementation = function (HashAlgorithm) {
+    var Hash = Java.use("java.security.MessageDigest");
+    Hash.getInstance.overload('java.lang.String').implementation = function (HashAlgorithm) {
         console.log("getInstance caught: " + HashAlgorithm);
         return this.getInstance(HashAlgorithm);
     };
-    Crypto.update.overload("[B").implementation = function (AddedBytes) {
+    Hash.update.overload("[B").implementation = function (AddedBytes) {
         console.log("Update caught: " + toHexString(AddedBytes));
         this.update(AddedBytes);
     };
-    Crypto.digest.overload().implementation = function () { 
+    Hash.digest.overload().implementation = function () { 
         let OutputBytes = this.digest();
         console.log("Digest caught: " + toHexString(OutputBytes));
         return OutputBytes;
