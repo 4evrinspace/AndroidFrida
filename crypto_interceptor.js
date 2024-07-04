@@ -4,27 +4,27 @@ Java.perform(function() {
     var cipher = Java.use('javax.crypto.Cipher');
     secretKeySpec.$init.overload('[B', 'java.lang.String').implementation = function(arr, alg) {
         var key = b2s(arr);
-        send("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
+        console.log("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
         return secretKeySpec_init_1.call(this, arr, alg);
     }
 
     secretKeySpec.$init.overload('[B', 'int', 'int', 'java.lang.String').implementation = function(arr, off, len, alg) {
         var key = b2s(arr);
-        send("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
+        console.log("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
         return secretKeySpec_init_2.call(this, arr, off, len, alg);
     }
 
     ivParameterSpec.$init.overload('[B').implementation = function(arr)
     {
         var iv = b2s(arr);
-        send("Creating IV:\\n" + hexdump(iv));
+        console.log("Creating IV:\\n" + hexdump(iv));
         return ivParameterSpec_init_1.call(this, arr);
     }
 
     ivParameterSpec.$init.overload('[B', 'int', 'int').implementation = function(arr, off, len)
     {
         var iv = b2s(arr);
-        send("Creating IV, plaintext:\\n" + hexdump(iv));
+        console.log("Creating IV, plaintext:\\n" + hexdump(iv));
         return ivParameterSpec_init_2.call(this, arr, off, len);
     }
 
@@ -89,15 +89,15 @@ Java.perform(function() {
         return cipherUpdate_4.call(this, arr, a, b, c, d);
     }
     function info(iv, alg, plain, encoded) {
-        send("Performing encryption/decryption");
+        console.log("Performing encryption/decryption");
         if (iv) {
-            send("Initialization Vector: \\n" + hexdump(b2s(iv)));
+            console.log("Initialization Vector: \\n" + hexdump(b2s(iv)));
         } else {
-            send("Initialization Vector: " + iv);
+            console.log("Initialization Vector: " + iv);
         }
-        send("Algorithm: " + alg);
-        send("In: \\n" + hexdump(b2s(plain)));
-        send("Out: \\n" + hexdump(b2s(encoded)));
+        console.log("Algorithm: " + alg);
+        console.log("In: \\n" + hexdump(b2s(plain)));
+        console.log("Out: \\n" + hexdump(b2s(encoded)));
         complete_bytes = [];
         index = 0;
     }
