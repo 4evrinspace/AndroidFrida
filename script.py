@@ -11,7 +11,7 @@ elif sys.argv[1] == "hash":
     js_file = open("hash_interceptor.js").read()
 elif sys.argv[1] == "crypto":
     js_file = open("crypto_interceptor.js").read()
-while True: ## placeholder
+while True: ##Should be only like this, in other cases, ends after some iterations. That's bad for tracing
     app = device.get_frontmost_application(scope="full")
     ## MAKE SURE THAT FRIDA-SERVER IS RUNNING
     if app is not None and app != app_prev:

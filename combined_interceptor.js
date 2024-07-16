@@ -1,103 +1,107 @@
 Java.perform(function() {
+    var use_single_byte = false;
+    var complete_bytes = new Array();
+    var index = 0;
+    
     var secretKeySpec = Java.use('javax.crypto.spec.SecretKeySpec');
     var ivParameterSpec = Java.use('javax.crypto.spec.IvParameterSpec');
     var cipher = Java.use('javax.crypto.Cipher');
     secretKeySpec.$init.overload('[B', 'java.lang.String').implementation = function(arr, alg) {
         var key = b2s(arr);
-        send("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
-        return secretKeySpec_init_1.call(this, arr, alg);
+        console.log("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
+        return this.$init(arr, alg);
     }
 
     secretKeySpec.$init.overload('[B', 'int', 'int', 'java.lang.String').implementation = function(arr, off, len, alg) {
         var key = b2s(arr);
-        send("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
-        return secretKeySpec_init_2.call(this, arr, off, len, alg);
+        console.log("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
+        return this.$init(arr, off, len, alg);
     }
 
     ivParameterSpec.$init.overload('[B').implementation = function(arr)
     {
         var iv = b2s(arr);
-        send("Creating IV:\\n" + hexdump(iv));
-        return ivParameterSpec_init_1.call(this, arr);
+        console.log("Creating IV:\\n" + hexdump(iv));
+        return this.$init(arr);
     }
 
     ivParameterSpec.$init.overload('[B', 'int', 'int').implementation = function(arr, off, len)
     {
         var iv = b2s(arr);
-        send("Creating IV, plaintext:\\n" + hexdump(iv));
-        return ivParameterSpec_init_2.call(this, arr, off, len);
+        console.log("Creating IV, plaintext:\\n" + hexdump(iv));
+        return this.$init(arr, off, len);
     }
 
     cipher.doFinal.overload().implementation = function() {
-        var ret = cipherDoFinal_1.call(this);
+        var ret = this.doFinal();
         info(this.getIV(), this.getAlgorithm(), complete_bytes, ret);
         return ret;
     }
 
     cipher.doFinal.overload('[B').implementation = function(arr) {
         addtoarray(arr);
-        var ret = cipherDoFinal_2.call(this, arr);
+        var ret = this.doFinal(arr);
         info(this.getIV(), this.getAlgorithm(), complete_bytes, ret);
         return ret;
     }
 
     cipher.doFinal.overload('[B', 'int').implementation = function(arr, a) {
         addtoarray(arr);
-        var ret = cipherDoFinal_3.call(this, arr, a);
+        var ret = this.doFinal(arr, a);
         info(this.getIV(), this.getAlgorithm(), complete_bytes, ret);
         return ret;
     }
 
     cipher.doFinal.overload('[B', 'int', 'int').implementation = function(arr, a, b) {
         addtoarray(arr);
-        var ret = cipherDoFinal_4.call(this, arr, a, b);
+        var ret = this.doFinal(arr, a, b);
         info(this.getIV(), this.getAlgorithm(), complete_bytes, ret);
         return ret;
     }
 
     cipher.doFinal.overload('[B', 'int', 'int', '[B').implementation = function(arr, a, b, c) {
         addtoarray(arr);
-        var ret = cipherDoFinal_5.call(this, arr, a, b, c);
+        var ret = this.doFinal(arr, a, b, c);
         info(this.getIV(), this.getAlgorithm(), complete_bytes, ret);
         return ret;
     }
 
     cipher.doFinal.overload('[B', 'int', 'int', '[B', 'int').implementation = function(arr, a, b, c, d) {
         addtoarray(arr);
-        var ret = cipherDoFinal_6.call(this, arr, a, b, c, d);
+        var ret = this.doFinal(arr, a, b, c, d);
         info(this.getIV(), this.getAlgorithm(), complete_bytes, c);
         return ret;
     }
 
     cipher.update.overload('[B').implementation = function(arr) {
         addtoarray(arr);
-        return cipherUpdate_1.call(this, arr);
+        return this.update(arr);
     }
 
     cipher.update.overload('[B', 'int', 'int').implementation = function(arr, a, b) {
         addtoarray(arr);
-        return cipherUpdate_2.call(this, arr, a, b);
+        return this.update(arr, a, b);
     }
 
     cipher.update.overload('[B', 'int', 'int', '[B').implementation = function(arr, a, b, c) {
         addtoarray(arr);
-        return cipherUpdate_3.call(this, arr, a, b, c);
+        return this.update(arr, a, b, c);
     }
 
     cipher.update.overload('[B', 'int', 'int', '[B', 'int').implementation = function(arr, a, b, c, d) {
         addtoarray(arr);
-        return cipherUpdate_4.call(this, arr, a, b, c, d);
+        return this.updatel(arr, a, b, c, d);
     }
     function info(iv, alg, plain, encoded) {
-        send("Performing encryption/decryption");
+        console.log("Performing encryption/decryption");
         if (iv) {
-            send("Initialization Vector: \\n" + hexdump(b2s(iv)));
+            console.log("Initialization Vector: \\n" + hexdump(b2s(iv)));
         } else {
-            send("Initialization Vector: " + iv);
+            console.log("Initialization Vector: " + iv);
         }
-        send("Algorithm: " + alg);
-        send("In: \\n" + hexdump(b2s(plain)));
-        send("Out: \\n" + hexdump(b2s(encoded)));
+        console.log("Algorithm: " + alg);
+        console.log("In: \\n" + hexdump(b2s(plain)));
+        console.log("Out: \\n" + hexdump(b2s(encoded)));
         complete_bytes = [];
         index = 0;
     }
