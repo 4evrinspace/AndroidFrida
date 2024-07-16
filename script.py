@@ -6,7 +6,7 @@ app_prev = None
 session = None
 js_file = ""
 if len(sys.argv) == 1:
-    js_file = open("combined_interceptor.js").read()
+    js_file = open("hash_interceptor.js").read() + open("crypto_interceptor.js").read()
 elif sys.argv[1] == "hash":
     js_file = open("hash_interceptor.js").read()
 elif sys.argv[1] == "crypto":
