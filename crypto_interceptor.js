@@ -13,9 +13,9 @@ Java.perform(function() {
         return this.getInstance(alg);
     }
     keyFactory.generatePrivate.overload('java.security.spec').implementation = function(key) {
-        var private = this.generatePrivate(key);
-        console.log(private);
-        return private
+        var privatekey = this.generatePrivate(key);
+        console.log(privatekey);
+        return privatekey
     }
     secretKeySpec.$init.overload('[B', 'java.lang.String').implementation = function(arr, alg) {
         var key = b2s(arr);
