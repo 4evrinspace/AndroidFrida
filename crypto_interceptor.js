@@ -6,6 +6,17 @@ Java.perform(function() {
     var secretKeySpec = Java.use('javax.crypto.spec.SecretKeySpec');
     var ivParameterSpec = Java.use('javax.crypto.spec.IvParameterSpec');
     var cipher = Java.use('javax.crypto.Cipher');
+    var keyFactory = Java.use('java.security.KeyFactory');
+    var encodedKeySpec = Java.use('java.security.spec.EncodedKeySpec');
+    keyFactory.getInstance.overload('java.lang.String').implementation = function(alg) {
+        console.log("Using " + alg + "for keyFactory");
+        return this.getInstance(alg);
+    }
+    keyFactory.generatePrivate.overload('java.security.spec').implementation = function(key) {
+        var private = this.generatePrivate(key);
+        console.log(private);
+        return private
+    }
     secretKeySpec.$init.overload('[B', 'java.lang.String').implementation = function(arr, alg) {
         var key = b2s(arr);
         console.log("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
