@@ -2,21 +2,46 @@ Java.perform(function() {
     var use_single_byte = false;
     var complete_bytes = new Array();
     var index = 0;
+    var sym = Module.findExportByName("libtmessages.49.so", "_ZN10Datacenter16aesIgeEncryptionEPhS0_S0_bbj");
+    if (sym !== null) {
+        Interceptor.attach(sym, {
+            onEnter(args) {
+                console.log("[+] Datacenter::aesIgeEncryption called");
+            },
+            onLeave(retval) {
+                console.log("[+] Datacenter::aesIgeEncryption returned: " + retval);
+            }
+        });
+    
+        setImmediate(function () {
+            console.log("[+] Frida script loaded!");
+        });
+    } else {
+        console.log("[!] Datacenter::aesIgeEncryption not found!");
+    }
     
     var secretKeySpec = Java.use('javax.crypto.spec.SecretKeySpec');
     var ivParameterSpec = Java.use('javax.crypto.spec.IvParameterSpec');
     var cipher = Java.use('javax.crypto.Cipher');
     var keyFactory = Java.use('java.security.KeyFactory');
     var encodedKeySpec = Java.use('java.security.spec.EncodedKeySpec');
+    var cert = Java.use('java.security.cert.CertificateFactory');
+    cert.generateCertificate.overload('java.io.InputStream').implementation = function(inp) {
+        var getCert = this.generateCertificate(inp);
+        console.log("Generated certificate" + getCert.getType());
+        console.log(getCert.toString());
+        console.log(getCert.getPublicKey() + " generated public key");
+    }
     keyFactory.getInstance.overload('java.lang.String').implementation = function(alg) {
         console.log("Using " + alg + "for keyFactory");
         return this.getInstance(alg);
     }
-    keyFactory.generatePrivate.overload('java.security.spec').implementation = function(key) {
-        var privatekey = this.generatePrivate(key);
-        console.log(privatekey);
-        return privatekey
+    
+    encodedKeySpec.getEncoded.overload().implementation = function() {
+        console.log(this.getEncoded());
+        return this.getEncoded()
     }
+
     secretKeySpec.$init.overload('[B', 'java.lang.String').implementation = function(arr, alg) {
         var key = b2s(arr);
         console.log("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
@@ -28,6 +53,7 @@ Java.perform(function() {
         console.log("Creating " + alg + " secret key, plaintext:\\n" + hexdump(key));
         return this.$init(arr, off, len, alg);
     }
+
 
     ivParameterSpec.$init.overload('[B').implementation = function(arr)
     {
