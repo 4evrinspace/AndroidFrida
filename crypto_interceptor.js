@@ -2,23 +2,6 @@ Java.perform(function() {
     var use_single_byte = false;
     var complete_bytes = new Array();
     var index = 0;
-    var sym = Module.findExportByName("libtmessages.49.so", "_ZN10Datacenter16aesIgeEncryptionEPhS0_S0_bbj");
-    if (sym !== null) {
-        Interceptor.attach(sym, {
-            onEnter(args) {
-                console.log("[+] Datacenter::aesIgeEncryption called");
-            },
-            onLeave(retval) {
-                console.log("[+] Datacenter::aesIgeEncryption returned: " + retval);
-            }
-        });
-    
-        setImmediate(function () {
-            console.log("[+] Frida script loaded!");
-        });
-    } else {
-        console.log("[!] Datacenter::aesIgeEncryption not found!");
-    }
     
     var secretKeySpec = Java.use('javax.crypto.spec.SecretKeySpec');
     var ivParameterSpec = Java.use('javax.crypto.spec.IvParameterSpec');
