@@ -9,8 +9,7 @@ function logging () {
                     if (!method) {
                         return;
                     }
-                    var overloads = method.overloads;
-                    for (var overload of overloads) {
+                    for (var overload of method.overloads) {
                         overload.implementation = function () {
                             console.log('Called:' + curMethod.getDeclaringClass().getName() + '.' + curMethod.getName());
                             var i = 0;

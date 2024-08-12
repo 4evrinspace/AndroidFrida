@@ -27,4 +27,4 @@ while True: ##Should be only like this, in other cases, ends after some iteratio
             session = device.attach(app.pid)
             script = session.create_script(js_file)
             script.load()
-    app_prev_pid = app.pid
+        app_prev_pid = app.pid
