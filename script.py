@@ -31,3 +31,5 @@ while time.perf_counter() - start < attached_time: ##Should be only like this, i
             script = session.create_script(js_file)
             script.load()
         app_prev_pid = app.pid
+if app is not None:
+    session = device.attach(app.pid)
