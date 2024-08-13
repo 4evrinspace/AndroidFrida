@@ -1,6 +1,8 @@
 import frida
 import sys
+import time
 
+attached_time = 30
 device = frida.get_usb_device()
 app_prev_pid = None
 session = None
@@ -15,7 +17,8 @@ elif sys.argv[1] == "-t" or sys.argv[1] == "--telegram":
     js_file = open("telegram_interceptor.js").read()
 elif sys.argv[1] == "-u" or sys.argv[1] == "--universal":
     js_file = "var intercepted_package = '{}';\n".format(sys.argv[2]) + open("universal_interceptor.js").read()
-while True: ##Should be only like this, in other cases, ends after some iterations. That's bad for tracing
+start = time.perf_counter()
+while time.perf_counter() - start < attached_time: ##Should be only like this, in other cases, ends after some iterations. That's bad for tracing
     app = device.get_frontmost_application(scope="full")
     
     ## MAKE SURE THAT FRIDA-SERVER IS RUNNING
