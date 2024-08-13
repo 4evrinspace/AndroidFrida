@@ -9,9 +9,21 @@ Small pet-project about intercepting into android processes using frida and self
 ## Running 
 To run a script written on js, you should run script.py file
 ```
-python script.py <arguments>
-``` 
-Arguments - hash/crypto/*(nothing) - to trace hash/crypto/both set of functions respectively
+python script.py <flag to choice working mode>
+```
+## Flags (or working modes)
+-h or --hash    logging some hash libraries
+
+-c or --crypto  logging some crypto libraries
+
+-t or --telegram  (TODO)
+
+-u (package) or --universal (package)  logging all usage of (packege)
+
+Example :
+```
+python script.py -u org.telegram.messenger
+```
 
 to exit from frida shell after command execute
 ```
