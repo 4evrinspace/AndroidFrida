@@ -18,7 +18,7 @@ python script.py <flag to choice working mode>
 
 -t or --telegram  (TODO)
 
--u <package> or --universal <package>  logging all usage of <packege>
+-u (package) or --universal (package)  logging all usage of (packege)
 
 Example :
 ```
